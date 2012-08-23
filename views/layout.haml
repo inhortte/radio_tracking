@@ -1,0 +1,18 @@
+!!! XML
+!!!
+%html
+  %head
+    = haml :head
+    %body
+      .container
+        %div{:id => "menu", :class => "span-20 round"}
+          Menu
+        %br.clear
+        %br.clear
+        %div{:id => "content", :class => "span-20 round"}
+          #flash
+            = haml :flash
+          = yield
+
+          
+                            

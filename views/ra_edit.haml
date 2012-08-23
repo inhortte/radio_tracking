@@ -1,0 +1,60 @@
+%form{:action => "/forms/released_animal_edit", :method => "post"}
+  %input{:type => "hidden", :name => "id", :value => "#{@ra.id}"}
+  #col1
+    %p.clear
+      %label{:for => "animal_id"} Animal ID
+      %input{:type => "text", :name => "animal_id",
+             :value => "#{@ra.animal_id}"}
+    %p.clear
+      %label{:for => "nickname"} Nickname
+      %input{:type => "text", :name => "nickname", :value => "#{@ra.nickname}"}
+    %p.clear
+      %label{:for => "birthdate"} Birthdate
+      %input{:type => "text", :name => "birthdate", :id => "birthdate",
+             :value => "#{@ra.birthdate.strftime(MYSQLTIME)}"}
+    %p.clear
+      %label{:for => "microchip"} Microchip
+      %input{:type => "text", :name => "microchip",
+             :value => "#{@ra.microchip}"}
+    %p.clear
+      %label{:for => "release_site"} Release Site
+      %input{:type => "text", :name => "release_site",
+             :value => "#{@ra.release_site}"}
+  #col2
+    %p.clear
+      %label{:for => "frequency"} Frequency
+      %input{:type => "text", :name => "frequency",
+             :value => "#{@ra.frequency}"}
+    %p.clear
+      %label{:for => "sex"} Sex
+      %select{:name => "sex"}
+        = "<option value=\"Female\" #{@ra.sex == 'Female' ? 'selected=\"selected\"' : ''}>Female</option>"
+        = "<option value=\"Male\" #{@ra.sex == 'Male' ? 'selected=\"selected\"' : ''}>Male</option>"
+    %p.clear
+      %label{:for => "release_date"} Release Date
+      %input{:type => "text", :name => "release_date", :id => "release_date",
+             :value => "#{@ra.release_date.strftime(MYSQLTIME)}"}
+    %p.clear
+      %label{:for => "enclosure_type"} Enclosure Type
+      %input{:type => "text", :name => "enclosure_type",
+             :value => "#{@ra.enclosure_type}"}
+    %p.clear
+      %label{:for => "release_location_N"} Release Loc N
+      %input{:type => "text", :name => "release_location_N",
+             :value => "#{@ra.release_location_N}"}
+    %p.clear
+      %label{:for => "release_location_E"} Release Loc E
+      %input{:type => "text", :name => "release_location_E",
+             :value => "#{@ra.release_location_E}"}
+  %br.clear
+  %br.clear    
+  %p.clear
+    %label{:for => "remarks"} Remarks
+    %textarea{:name => "remarks"}
+      = @ra.remarks
+  %p.clear
+    %input{:type => "submit", :value => "submit"}
+
+:javascript
+  $("#birthdate").datepicker({dateFormat:"yy-mm-dd"});
+  $("#release_date").datepicker({dateFormat:"yy-mm-dd"});

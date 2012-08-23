@@ -1,0 +1,31 @@
+%p Animals
+%table
+  %thead
+    %tr
+      %td Name
+      %td ID
+      %td Freq
+      %td Sex
+      %td B Date
+      %td R Date
+      %td Microchip
+      %td Enc Type
+      %td N
+      %td E
+      %td Site
+  %tbody
+    - @ras.each do |ra|
+      %tr
+        %td
+          %a{:href => "/forms/released_animal/#{ra.id}"}
+            = ra.nickname
+        %td= ra.animal_id
+        %td= ra.frequency
+        %td= ra.sex[0].chr
+        %td= ra.birthdate.strftime(STRFDATE)
+        %td= ra.release_date.strftime(STRFDATE)
+        %td= ra.microchip
+        %td= ra.enclosure_type
+        %td= ra.release_location_N
+        %td= ra.release_location_E
+        %td= ra.release_site

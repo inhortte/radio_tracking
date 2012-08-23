@@ -1,0 +1,230 @@
+$fontFamily: Verdana
+$fontSize: 14px
+$menuFontSize: 12px
+$footerFontSize: 10px
+$bodyBackgroundColor: #333
+$bodyTextColor: #ccc
+$linkColor: #f8de08
+$headingColor: #568025
+$headerBackgroundColor: #eee
+$hlavniBackgroundColor: #333
+$breadcrumbBGColor: #333
+$menuHoverBGColor: brown
+$menuHoverColor: green
+$hlavniBorderColor: #4ac
+
+body
+  :font
+    :family $fontFamily
+    :size $fontSize
+  :background
+    :image url('images/lutreola_27.jpg')
+    :color $bodyBackgroundColor
+  :color $bodyTextColor
+  :margin 0 0 0 0
+
+a
+  &:link
+    :color $linkColor
+    :text-decoration none
+  &:visited
+    :color $linkColor
+  &:hover
+    :text-decoration underline
+
+img
+  :border 0
+
+h1, h2, h3, h4, h5, h6
+  :color $headingColor
+  :margin
+    :bottom 0
+
+form
+  #col1
+    :float left
+  #col2
+    :float right
+  label
+    :float left
+    :padding
+      :top 10px
+      :right 20px
+  input, select
+    :float right
+    
+#footer
+  :font
+    :family Helvetica
+    :size $footerFontSize
+  :color $bodyTextColor
+  :padding 5px
+  :width 100%
+  #left
+    :float left
+    :padding
+      :right 20px
+  #right
+    :float right
+
+#menu
+  :position absolute
+  :top 0px // This must echo #dropdown. The whole header is -5px vertical.
+  :left 10px
+
+#necropolis
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#352b2100, endColorstr=#352b21ff)
+  /* IE8 uses -ms-filter for whatever reason... */
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#352b2100, endColorstr=#352b21ff)
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(53, 43, 33, 0)), to(rgba(53, 43, 33, 1))) /* for webkit browsers */
+  background: -moz-linear-gradient(rgba(53, 43, 33, 0) 0%,  rgba(53, 43, 33, 1) 100%) /* for firefox 3.6+ */ 
+  :padding 10px
+  :width 97%
+  #left
+    :float left
+  #right
+    :float left
+  .slim
+    :width 97.5%
+  .slimmer
+    :width 85%
+
+.hlavni
+  :background
+    :color $hlavniBackgroundColor
+  :color $bodyTextColor
+  :border 2px solid $hlavniBorderColor
+  :padding 10px 10px 10px 10px
+  :margin
+    :bottom 10px
+
+.nopad
+  :padding 0
+
+.clear
+  :clear both
+
+.round
+  -moz-border-radius: 8px
+  -webkit-border-radius: 8px
+  border-radius: 8px
+
+.bottomround
+  -moz-border-radius: 10px
+  -webkit-border-radius: 10px
+  border-radius: 10px
+
+#select_menus, #select_collections
+  :width 100%
+  #select_box
+    :float left
+  #instructions
+    :float left
+    :padding
+      :top 20px
+      :left 20px
+      :right 20px
+  #menu_titles_div, #collection_names_div
+    :float left
+    :padding
+      :top 10px
+    .menu_name
+      :padding
+        :right 10px
+#entry_menus
+  ul
+    :list-style-type none
+    :margin 0
+    :padding 0
+    :width 60%
+    li
+      :margin 0 3px 3px 3px
+      :padding 5px
+        :left 15px
+      :font
+        :size 12px
+      :height 18px
+      span
+        :position absolute
+        :margin
+          :left -1.3em
+
+#flash
+  :font
+    :weight bold
+    :size smaller
+  :color #b00
+  :padding
+    :bottom 20px
+
+#dropdown
+  :margin
+    :right 0%
+    :left 0%
+    :top 5px
+    
+  ul
+    :list-style none
+    :margin 0
+    :padding 0
+  a, h2
+    :font
+      :family Verdana
+      :size $menuFontSize
+    :display block
+    :border
+      :width 0px
+      :style solid
+      :color #ccc
+    :margin 0
+  h2
+    :color black
+    :background
+      :color $headerBackgroundColor
+    :font
+      :size 70%
+      :weight normal
+  a
+    :color black
+    :background
+      :color $headerBackgroundColor
+    :text-decoration none
+    :padding 10px 10px 5px 10px
+    &:hover
+      :background
+        :color $menuHoverBGColor
+      :color $menuHoverColor
+  li.inline
+    :float left
+    :z-index 100
+  li
+    :position relative
+  ul
+    ul
+      :background
+        :color $headerBackgroundColor
+      :position absolute
+        :bottom 100%
+        :left 0
+      :display none
+      a
+        :background
+          :color $headerBackgroundColor
+      ul
+        :position absolute
+        :top 0
+        :left 100%
+        :width 100%
+        :margin
+          :left 0px
+    li:hover
+      ul
+        :display block
+        :width 200%
+        ul
+          :display none
+      li:hover
+        ul
+          :display block
+          :width 100%
+
