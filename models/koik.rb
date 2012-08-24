@@ -90,8 +90,7 @@ class Radiotracking
   property :id, Serial
   property :frequency, Integer
   property :nickname, String, :length => 30
-  property :date, Date
-  property :time, Time
+  property :date, DateTime
   property :location_of_observer_E, Float
   property :location_of_observer_N, Float
   property :location_of_animal_E, Float

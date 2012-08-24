@@ -4,6 +4,45 @@ function setRTFields(ra) {
     $("#frequency").val(ra.frequency);
 }
 
+function displayRT(id) {
+    $("#rt_nickname").val(id);
+    $("#rt_animal_id").val(id);
+    $("#rt_frequency").val(id);
+	
+    $.ajax({
+	url: "/ajax/rt/" + id, // This is the released_animal id
+	success: function(html) {
+	    $("#buliimia").html(html);
+	}
+    });
+}
+
+// This must be called everytime something which needs to be sensed
+// by jquery is loaded via ajax.
+function ajax_hovno() {
+    $("a[id^='rtdel']").click(function() {
+	var id = this.id.substr(5);
+	var ra_id = ""; // to be filled.
+	if(confirm("Are you sure?")) {
+	    $.ajax({
+		url: "/ajax/ra_id/" + id,
+		async: false,
+		dataType: 'json',
+		success: function(json) {
+		    ra_id = json;
+		}
+	    });
+	    $.ajax({
+		url: "/forms/track/" + id + "/delete",
+		async: false,
+		success: function(anything) {
+		    window.location.href = "/forms/track/animal/" + ra_id;
+		}
+	    });
+	}
+    });
+}
+
 $(document).ready(function() {
     $("#nickname_select").change(function() {
 	var data = {
@@ -44,15 +83,7 @@ $(document).ready(function() {
     });
     $("select[id^='rt_']").change(function() {
 	var id = $(this).val();
-	$("#rt_nickname").val(id);
-	$("#rt_animal_id").val(id);
-	$("#rt_frequency").val(id);
-	
-	$.ajax({
-	    url: "/ajax/rt/" + id, // This is the released_animal id
-	    success: function(html) {
-		$("#buliimia").html(html);
-	    }
-	});
+	displayRT(id);
     });
+    ajax_hovno();
 });

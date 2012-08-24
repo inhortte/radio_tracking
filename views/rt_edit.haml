@@ -1,4 +1,7 @@
-%h3 Update Radiotracking Data
+%h3
+  Update Radiotracking Data &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  %a{:href => "/forms/track/animal/#{@rt.released_animal.id}",
+     :style => "font-size: smaller;"} Back
 %br.clear
 %form{:action => "/forms/track_edit", :method => "post"}
   %input{:type => 'hidden', :name => 'id', :value => "#{@rt.id}"}
@@ -10,7 +13,7 @@
     %p.clear
       %label{:for => "released_animal_id"} Animal ID
       %select{:name => "released_animal_id", :id => "ra_id_select"}
-        = options_for_animal_ids(@rt.id)
+        = options_for_animal_ids(@rt.released_animal.id)
     %p.clear
       %label{:for => "date"} Date
       %input{:type => "text", :name => "date", :id => "date",
@@ -18,7 +21,7 @@
     %p.clear
       %label{:for => "time"} Time
       %input{:type => "text", :name => "time", :id => "time",
-             :value => "#{@rt.time.strftime(MYSQLTIME)}"}
+             :value => "#{@rt.date.strftime(MYSQLTIME)}"}
     %p.clear
       %label{:for => "location_of_observer_E"} Loc Observer E
       %input{:type => "text", :name => "location_of_observer_E",

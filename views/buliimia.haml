@@ -1,35 +1,40 @@
 %table
-  %thead
-    %tr
-      %td Date / Time
-      %td Ob E
-      %td Ob N
-      %td An E
-      %td An N
-      %td Active
-      %td Observer
-      %td Biotope
-      %td DFW
-      %td WBody
-      %td WL
-      %td Precipitation
-      %td Temp
-  %tbody
-    - @rts.each do |rt|
-      %tr
-        %td
-          %a{:href => "/forms/track/#{rt.id}"}
-            = rt.date.strftime(STRFDATE)
-            = rt.time.strftime(MYSQLTIME)
-        %td= rt.location_of_observer_E
-        %td= rt.location_of_observer_N
-        %td= rt.location_of_animal_E
-        %td= rt.location_of_animal_N
-        %td= "#{rt.activity ? 'Y' : 'N'}"
-        %td= rt.observer.observer
-        %td= rt.biotope.biotope
-        %td= rt.distance_from_water.distance_from_water
-        %td= rt.waterbody_type.waterbody_type
-        %td= rt.water_level.water_level
-        %td= rt.precipitation.precipitation
-        %td= rt.temperature.temperature
+  %tr
+    %td Date
+    %td Ob E
+    %td Ob N
+    %td An E
+    %td An N
+    %td Active
+    %td Observer
+    %td Biotope
+    %td DFW
+    %td WBody
+    %td WL
+    %td Precipitation
+    %td Temp
+    %td &nbsp;
+  - @rts.each_index do |i|
+    %tr{:class => "#{i % 2 == 0 ? 'paarisarv' : 'odd'}"}
+      %td
+        %a{:href => "/forms/track/#{@rts[i].id}"}
+          = @rts[i].date.strftime(STRFTIME)
+      %td= @rts[i].location_of_observer_E
+      %td= @rts[i].location_of_observer_N
+      %td= @rts[i].location_of_animal_E
+      %td= @rts[i].location_of_animal_N
+      %td= "#{@rts[i].activity ? 'Y' : 'N'}"
+      %td= @rts[i].observer.observer
+      %td= @rts[i].biotope.biotope
+      %td= @rts[i].distance_from_water.distance_from_water
+      %td= @rts[i].waterbody_type.waterbody_type
+      %td= @rts[i].water_level.water_level
+      %td= @rts[i].precipitation.precipitation
+      %td= @rts[i].temperature.temperature
+      %td
+        %a{:href => "#", :id => "rtdel#{@rts[i].id}"}
+          %strong X
+
+:javascript
+  ajax_hovno();
+  

@@ -20,7 +20,7 @@ configure do
   set :static, :true
   set :public_folder, Proc.new { File.join(root, "public") }
   LOGGER = Logger.new('rt.log')
-  STRFDATE = "%d %b %Y"
+  STRFDATE = "%d %m %Y"
   STRFTIME = "%d %b %Y %H:%M"
   MYSQLDATE = "%Y-%m-%d"
   MYSQLTIME = "%H:%M"
@@ -90,7 +90,12 @@ namespace '/forms' do
 
   get('/radiotracking') { redirect '/forms/track' }
   get '/track' do
-    @rts = Radiotracking.all(:order => [:nickname.asc])
+    # @rts = Radiotracking.all(:order => [:nickname.asc])
+    haml :rt_index
+  end
+  get '/track/animal/:id' do
+    # @rts = Radiotracking.all(:order => [:nickname.asc])
+    @ra_id = params['id'].to_i
     haml :rt_index
   end
   get('/track/new') { haml :rt_new }
@@ -105,35 +110,46 @@ namespace '/forms' do
   post '/track' do
     logger.info "POST radiotracking data!"
     params['activity'] = params['activity'] ? true : false
+    time = params.delete('time')
+    params['date'] += " #{time}"
     logger.info params.inspect
-    ra = Radiotracking.new(params)
-    if ra.save
+    rt = Radiotracking.new(params)
+    if rt.save
       flash[:notice] = "#{params['nickname']} radiotracking by #{Observer.get(params['observer_id']).observer} saved"
+      redirect "/forms/track/animal/#{rt.released_animal.id}"
     else
       flash[:notice] = "There was a problem saving radiotracking data: #{params['nickname']} by #{Observer.get(params['observer_id']).observer}"
+      redirect '/forms/track/new'
     end
-    redirect '/forms/track'
   end
   post '/track_edit' do
     logger.info "PUT radiotracking!"
     params['activity'] = params['activity'] ? true : false
+    time = params.delete('time')
+    params['date'] += " #{time}"
     logger.info params.inspect
     rt = Radiotracking.get(params["id"])
     if rt
       if rt.update(params)
-      flash[:notice] = "#{params['nickname']} radiotracking by #{Observer.get(params['observer_id']).observer} updated"
+        flash[:notice] = "#{params['nickname']} radiotracking by #{Observer.get(params['observer_id']).observer} updated"
+        redirect "/forms/track/animal/#{rt.released_animal.id}"
       else
         flash[:notice] = "The update failed"
+        redirect '/forms/track'
       end
-      redirect '/forms/track'
     else
-      redirect '/forms/track'
+      redirect '/forms/track/new'
     end
+  end
+  get '/track/:id/delete' do
+    logger.info "DELETING ... radiotracking...."
+    rt = Radiotracking.get(params['id'])
+    rt.destroy
   end
 end
 
 namespace '/ajax' do
-  # get by id
+  # get released_animal by id
   get '/ra/:id' do
     ra = ReleasedAnimal.get(params[:id])
     if ra
@@ -153,8 +169,14 @@ namespace '/ajax' do
   end
   # this is the released_animal id
   get '/rt/:id' do 
-    @rts = Radiotracking.all(:released_animal_id => params['id'])
+    @rts = Radiotracking.all(:released_animal_id => params['id'],
+                             :order => [:date.asc])
     haml :buliimia, :layout => false
+  end
+  # released_animal id from radiotracking id
+  get '/ra_id/:rt_id' do
+    ra_id = Radiotracking.get(params['rt_id']).released_animal.id
+    ra_id.to_json
   end
 end
 
