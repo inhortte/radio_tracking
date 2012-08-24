@@ -4,7 +4,7 @@ $menuFontSize: 12px
 $footerFontSize: 10px
 $bodyBackgroundColor: #333
 $bodyTextColor: #ccc
-$linkColor: #f8de08
+$linkColor: #55ee08
 $headingColor: #568025
 $headerBackgroundColor: #eee
 $hlavniBackgroundColor: #333
@@ -70,7 +70,24 @@ form
 #menu
   :position absolute
   :top 0px // This must echo #dropdown. The whole header is -5px vertical.
-  :left 10px
+  :left 100px
+  :font
+    :size 16px
+    :weight bold
+  ul
+    :list-style none
+    li
+      :padding 0 20px 0 0
+      :display inline
+
+#rt_selections
+  .selection
+    :padding 0 20px 0 0
+    :display inline
+    .label
+      :padding 0 10px 0 0
+      :display inline
+      
 
 #necropolis
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#352b2100, endColorstr=#352b21ff)
@@ -104,6 +121,10 @@ form
 .clear
   :clear both
 
+tr.paarisarv
+  td
+    :color #000
+  
 .round
   -moz-border-radius: 8px
   -webkit-border-radius: 8px

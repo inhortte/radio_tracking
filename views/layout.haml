@@ -6,10 +6,10 @@
     %body
       .container
         %div{:id => "menu", :class => "span-20 round"}
-          Menu
+          = haml :menu
         %br.clear
         %br.clear
-        %div{:id => "content", :class => "span-20 round"}
+        %div{:id => "content", :class => "span-24 round"}
           #flash
             = haml :flash
           = yield

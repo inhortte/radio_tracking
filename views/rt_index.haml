@@ -1,0 +1,20 @@
+%h3 Radiotracking
+%br.clear
+#rt_selections
+  .selection
+    .label
+      Nickname
+    %select{:id => "rt_nickname"}
+      = options_for_nicknames_to_ids
+  .selection
+    .label
+      Animal ID
+    %select{:id => "rt_animal_id"}
+      = options_for_animal_ids
+  .selection
+    .label
+      Frequency
+    %select{:id => 'rt_frequency'}
+      = options_for_frequencies
+    
+#buliimia

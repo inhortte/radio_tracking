@@ -1,0 +1,84 @@
+%h3 Update Radiotracking Data
+%br.clear
+%form{:action => "/forms/track_edit", :method => "post"}
+  %input{:type => 'hidden', :name => 'id', :value => "#{@rt.id}"}
+  #col1
+    %p.clear
+      %label{:for => "nickname"} Nickname
+      %select{:name => "nickname", :id => "nickname_select"}
+        = options_for_nicknames(@rt.nickname)
+    %p.clear
+      %label{:for => "released_animal_id"} Animal ID
+      %select{:name => "released_animal_id", :id => "ra_id_select"}
+        = options_for_animal_ids(@rt.id)
+    %p.clear
+      %label{:for => "date"} Date
+      %input{:type => "text", :name => "date", :id => "date",
+             :value => "#{@rt.date.strftime(MYSQLDATE)}"}
+    %p.clear
+      %label{:for => "time"} Time
+      %input{:type => "text", :name => "time", :id => "time",
+             :value => "#{@rt.time.strftime(MYSQLTIME)}"}
+    %p.clear
+      %label{:for => "location_of_observer_E"} Loc Observer E
+      %input{:type => "text", :name => "location_of_observer_E",
+             :value => "#{@rt.location_of_observer_E}"}        
+    %p.clear
+      %label{:for => "location_of_observer_N"} Loc Observer N
+      %input{:type => "text", :name => "location_of_observer_N",
+             :value => "#{@rt.location_of_observer_N}"}
+    %p.clear
+      %label{:for => "location_of_animal_E"} Loc Animal E
+      %input{:type => "text", :name => "location_of_animal_E",
+             :value => "#{@rt.location_of_animal_E}"}        
+    %p.clear
+      %label{:for => "location_of_animal_N"} Loc Animal N
+      %input{:type => "text", :name => "location_of_animal_N",
+             :value => "#{@rt.location_of_animal_N}"}        
+    %p.clear
+      %label{:for => "activity"} Activity
+      = "<input type=\"checkbox\" name=\"activity\" #{@rt.activity ? 'checked=\"checked\"' : ''} />"
+  #col2
+    %p.clear
+      %label{:for => "frequency"} Frequency
+      %input{:type => "text", :name => "frequency", :readonly => "readonly",
+             :id => "frequency", :value => "#{@rt.frequency}"}
+    %p.clear
+      %label{:for => "observer_id"} Observer
+      %select{:name => "observer_id"}
+        = options_for_observers(@rt.observer.id)
+    %p.clear
+      %label{:for => "biotope_id"} Biotope
+      %select{:name => "biotope_id"}
+        = options_for_biotopes(@rt.biotope.id)
+    %p.clear
+      %label{:for => "distance_from_water_id"} Distance from Water
+      %select{:name => "distance_from_water_id"}
+        = options_for_distance_from_waters(@rt.distance_from_water.id)
+    %p.clear
+      %label{:for => "waterbody_type_id"} Waterbody Type
+      %select{:name => "waterbody_type_id"}
+        = options_for_waterbody_types(@rt.waterbody_type.id)
+    %p.clear
+      %label{:for => "water_level_id"} Water Level
+      %select{:name => "water_level_id"}
+        = options_for_water_levels(@rt.water_level.id)
+    %p.clear
+      %label{:for => "precipitation_id"} Precipitation
+      %select{:name => "precipitation_id"}
+        = options_for_precipitations(@rt.precipitation.id)
+    %p.clear
+      %label{:for => "temperature_id"} Temperature
+      %select{:name => "temperature_id"}
+        = options_for_temperatures(@rt.temperature.id)
+  %br.clear
+  %br.clear    
+  %p.clear
+    %label{:for => "remarks"} Remarks
+    %textarea{:name => "remarks"}= @rt.remarks
+  %p.clear
+    %input{:type => "submit", :value => "update"}
+
+:javascript
+  $("#date").datepicker({dateFormat:"yy-mm-dd"});
+  $("#time").timepicker({});  

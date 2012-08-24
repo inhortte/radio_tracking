@@ -31,4 +31,28 @@ $(document).ready(function() {
 	    }
 	});
     });
+    $("a[id^='radel']").click(function() {
+	var id = this.id.substr(5);
+	if(confirm("Are you sure?")) {
+	    $.ajax({
+		url: "/forms/released_animal/" + id + "/delete",
+		success: function(anything) {
+		    window.location.href = "/forms/released_animal";
+		}
+	    });
+	}
+    });
+    $("select[id^='rt_']").change(function() {
+	var id = $(this).val();
+	$("#rt_nickname").val(id);
+	$("#rt_animal_id").val(id);
+	$("#rt_frequency").val(id);
+	
+	$.ajax({
+	    url: "/ajax/rt/" + id, // This is the released_animal id
+	    success: function(html) {
+		$("#buliimia").html(html);
+	    }
+	});
+    });
 });

@@ -1,31 +1,39 @@
-%p Animals
+%h3 Animals
+%br.clear
 %table
-  %thead
-    %tr
-      %td Name
-      %td ID
-      %td Freq
-      %td Sex
-      %td B Date
-      %td R Date
-      %td Microchip
-      %td Enc Type
-      %td N
-      %td E
-      %td Site
-  %tbody
-    - @ras.each do |ra|
-      %tr
-        %td
-          %a{:href => "/forms/released_animal/#{ra.id}"}
-            = ra.nickname
-        %td= ra.animal_id
-        %td= ra.frequency
-        %td= ra.sex[0].chr
-        %td= ra.birthdate.strftime(STRFDATE)
-        %td= ra.release_date.strftime(STRFDATE)
-        %td= ra.microchip
-        %td= ra.enclosure_type
-        %td= ra.release_location_N
-        %td= ra.release_location_E
-        %td= ra.release_site
+  %tr
+    %td Name
+    %td ID
+    %td Freq
+    %td Sex
+    %td B Date
+    %td R Date
+    %td Microchip
+    %td Enc Type
+    %td N
+    %td E
+    %td Site
+    %td &nbsp;
+  - @ras.each_index do |i|
+    %tr{:class => "#{i % 2 == 0 ? 'paarisarv' : 'odd'}"}
+      %td
+        %a{:href => "/forms/released_animal/#{@ras[i].id}"}
+          - if @ras[i].nickname.empty?
+            \...
+          - else
+            = @ras[i].nickname
+      %td
+        %a{:href => "/forms/released_animal/#{@ras[i].id}"}
+          = @ras[i].animal_id
+      %td= @ras[i].frequency
+      %td= @ras[i].sex[0].chr
+      %td= @ras[i].birthdate.strftime(STRFDATE)
+      %td= @ras[i].release_date.strftime(STRFDATE)
+      %td= @ras[i].microchip
+      %td= @ras[i].enclosure_type
+      %td= @ras[i].release_location_N
+      %td= @ras[i].release_location_E
+      %td= @ras[i].release_site
+      %td
+        %a{:href => "#", :id => "radel#{@ras[i].id}"}
+          %strong X

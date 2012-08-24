@@ -22,7 +22,8 @@ configure do
   LOGGER = Logger.new('rt.log')
   STRFDATE = "%d %b %Y"
   STRFTIME = "%d %b %Y %H:%M"
-  MYSQLTIME = "%Y-%m-%d"
+  MYSQLDATE = "%Y-%m-%d"
+  MYSQLTIME = "%H:%M"
 end
 
 DataMapper.setup(:default, 'mysql://localhost/saaremaa2012')
@@ -53,6 +54,10 @@ namespace '/forms' do
   end
   post '/released_animal' do
     logger.info "POST released animal!"
+    params['release_location_E'] = params['release_location_E'].to_f
+    params['release_location_N'] = params['release_location_N'].to_f
+    params['birthdate'] = Time.now.strftime(MYSQLDATE) if params['birthdate'].empty?
+    params['release_date'] = Time.now.strftime(MYSQLDATE) if params['release_date'].empty?
     logger.info params.inspect
     ra = ReleasedAnimal.new(params)
     if ra.save
@@ -77,6 +82,11 @@ namespace '/forms' do
       redirect '/forms/released_animal'
     end
   end
+  get '/released_animal/:id/delete' do
+    logger.info "DELETING ... #{ReleasedAnimal.get(params['id']).nickname}"
+    ra = ReleasedAnimal.get(params['id'])
+    ra.destroy
+  end
 
   get('/radiotracking') { redirect '/forms/track' }
   get '/track' do
@@ -84,6 +94,42 @@ namespace '/forms' do
     haml :rt_index
   end
   get('/track/new') { haml :rt_new }
+  get '/track/:id' do
+    @rt = Radiotracking.get(params[:id])
+    if @rt
+      haml :rt_edit
+    else
+      haml :rt_new
+    end
+  end
+  post '/track' do
+    logger.info "POST radiotracking data!"
+    params['activity'] = params['activity'] ? true : false
+    logger.info params.inspect
+    ra = Radiotracking.new(params)
+    if ra.save
+      flash[:notice] = "#{params['nickname']} radiotracking by #{Observer.get(params['observer_id']).observer} saved"
+    else
+      flash[:notice] = "There was a problem saving radiotracking data: #{params['nickname']} by #{Observer.get(params['observer_id']).observer}"
+    end
+    redirect '/forms/track'
+  end
+  post '/track_edit' do
+    logger.info "PUT radiotracking!"
+    params['activity'] = params['activity'] ? true : false
+    logger.info params.inspect
+    rt = Radiotracking.get(params["id"])
+    if rt
+      if rt.update(params)
+      flash[:notice] = "#{params['nickname']} radiotracking by #{Observer.get(params['observer_id']).observer} updated"
+      else
+        flash[:notice] = "The update failed"
+      end
+      redirect '/forms/track'
+    else
+      redirect '/forms/track'
+    end
+  end
 end
 
 namespace '/ajax' do
@@ -105,6 +151,11 @@ namespace '/ajax' do
       nil.to_json
     end
   end
+  # this is the released_animal id
+  get '/rt/:id' do 
+    @rts = Radiotracking.all(:released_animal_id => params['id'])
+    haml :buliimia, :layout => false
+  end
 end
 
 helpers do
@@ -119,9 +170,19 @@ helpers do
       mem += "<option value=\"#{ra.nickname}\" #{ra.nickname == nn ? 'selected=\"selected\"' : ''}>#{ra.nickname}</option>"
     end
   end
-  def options_for_animal_ids(id = nil)
+  def options_for_nicknames_to_ids(id = nil)
     ReleasedAnimal.all(:order => [:nickname.asc]).inject("") do |mem, ra|
+      mem += "<option value=\"#{ra.id}\" #{ra.id == id ? 'selected=\"selected\"' : ''}>#{ra.nickname.empty? ? '...' : ra.nickname}</option>"
+    end
+  end
+  def options_for_animal_ids(id = nil)
+    ReleasedAnimal.all(:order => [:animal_id.asc]).inject("") do |mem, ra|
       mem += "<option value=\"#{ra.id}\" #{ra.id == id.to_i ? 'selected=\"selected\"' : ''}>#{ra.animal_id}</option>"
+    end
+  end
+  def options_for_frequencies(freq = nil)
+    ReleasedAnimal.all(:order => [:frequency.asc]).inject("") do |mem, ra|
+      mem += "<option value=\"#{ra.id}\" #{ra.id == id.to_i ? 'selected=\"selected\"' : ''}>#{ra.frequency}</option>"      
     end
   end
   def options_for_observers(id = nil)

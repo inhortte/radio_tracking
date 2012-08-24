@@ -1,0 +1,35 @@
+%table
+  %thead
+    %tr
+      %td Date / Time
+      %td Ob E
+      %td Ob N
+      %td An E
+      %td An N
+      %td Active
+      %td Observer
+      %td Biotope
+      %td DFW
+      %td WBody
+      %td WL
+      %td Precipitation
+      %td Temp
+  %tbody
+    - @rts.each do |rt|
+      %tr
+        %td
+          %a{:href => "/forms/track/#{rt.id}"}
+            = rt.date.strftime(STRFDATE)
+            = rt.time.strftime(MYSQLTIME)
+        %td= rt.location_of_observer_E
+        %td= rt.location_of_observer_N
+        %td= rt.location_of_animal_E
+        %td= rt.location_of_animal_N
+        %td= "#{rt.activity ? 'Y' : 'N'}"
+        %td= rt.observer.observer
+        %td= rt.biotope.biotope
+        %td= rt.distance_from_water.distance_from_water
+        %td= rt.waterbody_type.waterbody_type
+        %td= rt.water_level.water_level
+        %td= rt.precipitation.precipitation
+        %td= rt.temperature.temperature
